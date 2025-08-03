@@ -1,5 +1,5 @@
 using HepsiApi.Persistence;
-
+using HepsiApi.Application;
 var builder = WebApplication.CreateBuilder(args);
 
 // Swagger/OpenAPI
@@ -15,7 +15,7 @@ builder.Configuration.SetBasePath(env.ContentRootPath)
     .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
 builder.Services.AddPersistence(builder.Configuration);
-
+builder.Services.AddApplication();
 var app = builder.Build();
 
 
