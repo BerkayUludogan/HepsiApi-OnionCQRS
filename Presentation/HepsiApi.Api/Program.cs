@@ -1,5 +1,6 @@
 using HepsiApi.Persistence;
 using HepsiApi.Application;
+using HepsiApi.Mapper;
 var builder = WebApplication.CreateBuilder(args);
 
 // Swagger/OpenAPI
@@ -16,6 +17,7 @@ builder.Configuration.SetBasePath(env.ContentRootPath)
 
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddApplication();
+builder.Services.AddCustomMapper();
 var app = builder.Build();
 
 
