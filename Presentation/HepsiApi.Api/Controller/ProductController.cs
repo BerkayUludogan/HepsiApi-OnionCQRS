@@ -1,4 +1,7 @@
-﻿using HepsiApi.Application.Features.Products.Queries.GetAllProducts;
+﻿using HepsiApi.Application.Features.Products.Command.CreateProduct;
+using HepsiApi.Application.Features.Products.Command.DeleteProduct;
+using HepsiApi.Application.Features.Products.Command.UpdateProduct;
+using HepsiApi.Application.Features.Products.Queries.GetAllProducts;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -21,6 +24,30 @@ namespace HepsiApi.Api.Controller
         {
             var response = await mediator.Send(new GetAllProductsQueryRequest());
             return Ok(response);
+        }
+        [HttpPost]
+        public async Task<IActionResult> GetAllProducts(CreateProductCommandRequest request)
+        {
+            await mediator.Send(request);
+            return Ok();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateProducts(CreateProductCommandRequest request)
+        {
+            await mediator.Send(request);
+            return Ok();
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateProducts(UpdateProductCommandRequest request)
+        {
+            await mediator.Send(request);
+            return Ok();
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteProducts(DeleteProductCommandRequest request)
+        {
+            await mediator.Send(request);
+            return Ok();
         }
     }
 }
