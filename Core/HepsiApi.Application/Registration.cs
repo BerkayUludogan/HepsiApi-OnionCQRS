@@ -1,11 +1,10 @@
-﻿using HepsiApi.Application.Exceptions;
+﻿using FluentValidation;
+using HepsiApi.Application.Beheviors;
+using HepsiApi.Application.Exceptions;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
+using System.Reflection; 
 
 namespace HepsiApi.Application
 {
@@ -16,6 +15,10 @@ namespace HepsiApi.Application
             var assembly = Assembly.GetExecutingAssembly();
             services.AddTransient<ExceptionMiddleware>();
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
+            services.AddValidatorsFromAssembly(assembly);
+            ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("tr-TR");
+
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(FluentValidationBehevarior<,>));
         }
     }
 }

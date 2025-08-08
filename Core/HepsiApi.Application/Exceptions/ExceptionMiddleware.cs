@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using SendGrid.Helpers.Errors.Model;
-using System.ComponentModel.DataAnnotations;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using SendGrid.Helpers.Errors.Model; 
 
 namespace HepsiApi.Application.Exceptions
 {
@@ -23,6 +23,14 @@ namespace HepsiApi.Application.Exceptions
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = statusCode;
 
+            if(exception.GetType() == typeof(ValidationException))
+            {
+                return context.Response.WriteAsync(new ExceptionModel
+                {
+                    Errors = ((ValidationException)exception).Errors.Select(x=>x.ErrorMessage),
+                    StatusCode = StatusCodes.Status400BadRequest
+                }.ToString());
+            }
             List<string> errors = new()
             {
                 $"Hata Mesajı: {exception.Message}",
