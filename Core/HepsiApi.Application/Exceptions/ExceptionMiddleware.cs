@@ -33,8 +33,7 @@ namespace HepsiApi.Application.Exceptions
             }
             List<string> errors = new()
             {
-                $"Hata Mesajı: {exception.Message}",
-                $"Mesaj Açıklaması: {exception.InnerException}", 
+                $"Hata Mesajı: {exception.Message}", 
             };
             return context.Response.WriteAsync(text: new ExceptionModel
             {
