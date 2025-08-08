@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HepsiApi.Api.Controller
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]/")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -19,34 +19,34 @@ namespace HepsiApi.Api.Controller
         {
             this.mediator = mediator;
         }
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<IActionResult> GetAllProducts()
         {
             var response = await mediator.Send(new GetAllProductsQueryRequest());
             return Ok(response);
         }
-        [HttpPost]
-        public async Task<IActionResult> GetAllProducts(CreateProductCommandRequest request)
-        {
-            await mediator.Send(request);
-            return Ok();
-        }
-        [HttpPost]
+        [HttpPost("[action]")]
         public async Task<IActionResult> CreateProducts(CreateProductCommandRequest request)
         {
             await mediator.Send(request);
             return Ok();
         }
-        [HttpPost]
+        [HttpPut("[action]")]
         public async Task<IActionResult> UpdateProducts(UpdateProductCommandRequest request)
         {
             await mediator.Send(request);
             return Ok();
         }
-        [HttpPost]
+        [HttpDelete("[action]")]
         public async Task<IActionResult> DeleteProducts(DeleteProductCommandRequest request)
         {
             await mediator.Send(request);
+            return Ok();
+        }
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetById([FromQuery]int id)
+        {
+            await mediator.Send(id);
             return Ok();
         }
     }
