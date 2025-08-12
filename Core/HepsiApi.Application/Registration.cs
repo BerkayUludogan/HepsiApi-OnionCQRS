@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using HepsiApi.Application.Beheviors;
 using HepsiApi.Application.Exceptions;
+using HepsiApi.Application.Features.Auth.Rules;
 using HepsiApi.Application.Features.Products.Rules;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,7 @@ namespace HepsiApi.Application
             var assembly = Assembly.GetExecutingAssembly();
             services.AddTransient<ExceptionMiddleware>();
             services.AddTransient<ProductRules>();
+            services.AddTransient<AuthRules>();
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
             services.AddValidatorsFromAssembly(assembly);
             ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("tr-TR");
