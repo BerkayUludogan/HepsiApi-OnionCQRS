@@ -29,14 +29,14 @@ builder.Services.AddCustomMapper();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hepsi API", Version = "v1", Description = "Hepsi API swagger client" });
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    c.AddSecurityDefinition("bearer", new OpenApiSecurityScheme()
     {
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer",
+        Scheme = "bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "'Bearer' yazýp boþluk býraktýktan sonra Token'i girebilirsiniz. \r\n\r\n Örneðin \"Bearer eyJhbGci0iJIUzI1NiIsInR5cCI6IkpXVCJ9\"",
+        Description = "'Token'i girebilirsiniz. \r\n\r\n Örneðin \"eyJhbGci0iJIUzI1NiIsInR5cCI6IkpXVCJ9\"",
     });
     c.AddSecurityRequirement(new OpenApiSecurityRequirement()
     {
@@ -46,7 +46,7 @@ builder.Services.AddSwaggerGen(c =>
                 Reference = new OpenApiReference
                 {
                     Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
+                    Id = "bearer"
                 }
             },
             Array.Empty<string>()
