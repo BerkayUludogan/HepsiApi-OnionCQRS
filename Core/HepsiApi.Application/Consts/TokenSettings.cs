@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HepsiApi.Infrastructure.Tokens
+namespace HepsiApi.Application.Consts
 {
     public class TokenSettings
     {
@@ -12,5 +12,8 @@ namespace HepsiApi.Infrastructure.Tokens
         public string Issuer { get; set; }
         public string Secret { get; set; }
         public int TokenValidityInMunitues { get; set; }
+        public int RefreshTokenValidityInDays { get; set; }
+
+
     }
 }
