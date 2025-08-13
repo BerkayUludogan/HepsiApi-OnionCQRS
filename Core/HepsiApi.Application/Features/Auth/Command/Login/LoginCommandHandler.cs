@@ -1,4 +1,5 @@
 ﻿using HepsiApi.Application.Bases;
+using HepsiApi.Application.Consts;
 using HepsiApi.Application.Features.Auth.Rules;
 using HepsiApi.Application.Interfaces.AutoMapper;
 using HepsiApi.Application.Interfaces.Tokens;
@@ -8,6 +9,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -19,13 +21,16 @@ namespace HepsiApi.Application.Features.Auth.Command.Login
 {
     public class LoginCommandHandler : BaseHandler, IRequestHandler<LoginCommandRequest, LoginCommandResponse>
     {
+        private readonly TokenSettings tokenSettings;
         private readonly UserManager<User> userManager;
         private readonly IConfiguration configuration;
         private readonly ITokenService tokenService;
         private readonly AuthRules authRules;
+        
 
-        public LoginCommandHandler(UserManager<User> userManager, IConfiguration configuration,ITokenService tokenService, AuthRules authRules, IMapper mapper, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor) : base(mapper, unitOfWork, httpContextAccessor)
+        public LoginCommandHandler(IOptions<TokenSettings> options, UserManager<User> userManager, IConfiguration configuration,ITokenService tokenService, AuthRules authRules, IMapper mapper, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor) : base(mapper, unitOfWork, httpContextAccessor)
         {
+            this.tokenSettings = options.Value;
             this.userManager = userManager;
             this.configuration = configuration;
             this.tokenService = tokenService;
@@ -40,10 +45,9 @@ namespace HepsiApi.Application.Features.Auth.Command.Login
             IList<string> roles = await userManager.GetRolesAsync(user);
             JwtSecurityToken token = await tokenService.CreateToken(user, roles);
             string refreshToken = tokenService.GenerateRefreshToken();
-            _ = int.TryParse(configuration["RefreshTokenValidityInDays"], out int refreshTokenValidityInDays);
 
             user.RefreshToken = refreshToken;
-            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(refreshTokenValidityInDays);
+            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(tokenSettings.RefreshTokenValidityInDays);
 
             await userManager.UpdateAsync(user);
             await userManager.UpdateSecurityStampAsync(user);

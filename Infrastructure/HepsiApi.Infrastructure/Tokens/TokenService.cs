@@ -1,4 +1,5 @@
 ﻿
+using HepsiApi.Application.Consts;
 using HepsiApi.Application.Interfaces.Tokens;
 using HepsiApi.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -42,6 +43,7 @@ namespace HepsiApi.Infrastructure.Tokens
                 claims: claims,
                 signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
                 );
+
             return token;
         }
 

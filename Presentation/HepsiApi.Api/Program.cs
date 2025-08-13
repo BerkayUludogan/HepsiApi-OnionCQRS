@@ -4,6 +4,8 @@ using HepsiApi.Mapper;
 using HepsiApi.Infrastructure;
 using HepsiApi.Application.Exceptions;
 using Microsoft.OpenApi.Models;
+using HepsiApi.Infrastructure.Tokens;
+using HepsiApi.Application.Consts;
 var builder = WebApplication.CreateBuilder(args);
 
 // Swagger/OpenAPI
@@ -25,6 +27,7 @@ builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddCustomMapper();
+
 
 builder.Services.AddSwaggerGen(c =>
 {

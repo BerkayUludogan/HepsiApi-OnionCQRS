@@ -1,4 +1,5 @@
-﻿using HepsiApi.Application.Interfaces.Tokens;
+﻿using HepsiApi.Application.Consts;
+using HepsiApi.Application.Interfaces.Tokens;
 using HepsiApi.Infrastructure.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
