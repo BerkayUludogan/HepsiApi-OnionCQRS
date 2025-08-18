@@ -1,5 +1,8 @@
-﻿using HepsiApi.Application.Consts;
+﻿using HepsiApi.Application.Beheviors;
+using HepsiApi.Application.Consts;
+using HepsiApi.Application.Interfaces.RedisCache;
 using HepsiApi.Application.Interfaces.Tokens;
+using HepsiApi.Infrastructure.RedisCache;
 using HepsiApi.Infrastructure.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -14,7 +17,12 @@ namespace HepsiApi.Infrastructure
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<TokenSettings>(configuration.GetSection("JWT"));
-            services.AddTransient<ITokenService,TokenService>();
+            services.AddTransient<ITokenService, TokenService>();
+
+            services.Configure<RedisCacheSettings>(configuration.GetSection("RedisCacheSettings"));
+            services.AddTransient<IRedisCacheService, RedisCacheService>();
+
+
             services.AddAuthentication(opt =>
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -31,9 +39,16 @@ namespace HepsiApi.Infrastructure
                     ValidateLifetime = false,
                     ValidIssuer = configuration["JWT:Issuer"],
                     ValidAudience = configuration["JWT:Audience"],
-                    ClockSkew = TimeSpan.Zero 
+                    ClockSkew = TimeSpan.Zero
                 };
             });
+            services.AddStackExchangeRedisCache(opt =>
+            {
+                opt.Configuration = configuration["RedisCacheSettings:ConnectionString"];
+                opt.InstanceName = configuration["RedisCacheSettings:InstanceName"];
+
+            }
+            );
         }
     }
 }

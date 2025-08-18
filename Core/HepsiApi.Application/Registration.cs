@@ -23,6 +23,8 @@ namespace HepsiApi.Application
             ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("tr-TR");
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(FluentValidationBehevarior<,>));
+
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RedisCacheBehevior<,>));
         }
         public static IServiceCollection AddRulesFromAssemblyContaining(
             this IServiceCollection services,
